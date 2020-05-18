@@ -1,5 +1,5 @@
 # EEZYbotArmAnalogStick
-PlatformIO/C++ Arduino software for controlling the EEZYbotARM with two analog joysticks.
+PlatformIO/C++ Arduino software for controlling the 3D printable EEZYbotARM with two analog joysticks.
 
 EEZYbotARM:
 
