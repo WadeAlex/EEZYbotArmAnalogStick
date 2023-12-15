@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 
-auto Arm = RobotArm{};
+static auto Arm = RobotArm{};
 
 void setup() {
   Arm.setup();

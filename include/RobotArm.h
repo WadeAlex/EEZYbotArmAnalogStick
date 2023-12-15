@@ -1,18 +1,23 @@
 #pragma once
 
 #include "AnalogStickInput.h"
-#include "ServoOutput.h"
+#include "ServoController.h"
 
 class RobotArm
 {
-private:
-    AnalogStickInput _xyStick = AnalogStickInput{0, 2};
-    AnalogStickInput _gripStick = AnalogStickInput{4, 5};
-    ServoOutput _xServo = ServoOutput{9, "x"};
-    ServoOutput _yServo = ServoOutput{10, "y"};
-    ServoOutput _gripServo = ServoOutput{11, "grip"};
-
 public:
     auto setup() -> void;
     auto loop() -> void;
+
+private:
+    const float SERVO_MOVEMENT_STEP = 0.1;
+
+    AnalogStickInput upperArmGripOpenStick = AnalogStickInput{A0, A1, 2};
+    AnalogStickInput lowerArmRotateGripCloseStick = AnalogStickInput{A2, A3, 4};
+    
+    ServoController rotationServo = ServoController{6};
+    ServoController lowerArmServo = ServoController{9};
+    ServoController upperArmServo = ServoController{10};
+    ServoController gripServo = ServoController{11};
 };
+

@@ -4,19 +4,23 @@
 
 class AnalogStickInput
 {
-private:
-    static const uint16_t MAX_VALUE = 511;
-    static const uint8_t ZERO_TOLERANCE = 3;
-
-    const uint8_t _xPin = {};
-    const uint8_t _yPin = {};
-
-    uint16_t _xOffset = 0;
-    uint16_t _yOffset = 0;
 public:
-    AnalogStickInput(uint8_t xPin, uint8_t yPin);
+    AnalogStickInput(uint8_t xPin, uint8_t yPin, uint8_t switchPin);
     auto setup() -> void;
-    auto loop() -> void;
     auto getXPosition() const -> float;
     auto getYPosition() const -> float;
+    auto getSwitch() const -> uint8_t;
+
+private:
+    static const int MAX_VALUE = 511;
+    static const uint8_t ZERO_TOLERANCE = 3;
+
+    const uint8_t xPin = {};
+    const uint8_t yPin = {};
+    const uint8_t switchPin = {};
+
+    int xCenter = 0;
+    int yCenter = 0;
+
+    auto toZeroIfClose(int value, unsigned tolerance = ZERO_TOLERANCE) const -> int;
 };

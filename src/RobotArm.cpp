@@ -1,32 +1,33 @@
 #include "RobotArm.h"
 
 #include "AnalogStickInput.h"
-#include "ServoOutput.h"
+#include "ServoController.h"
 
 #include <Arduino.h>
 
 auto RobotArm::setup() -> void
 {
     Serial.begin(9600);
-    Serial.print("Started\n");
-    _xyStick.setup();
-    _gripStick.setup();
-    _xServo.setup();
-    //yServo.setup();
-    _gripServo.setup();
+    upperArmGripOpenStick.setup();
+    lowerArmRotateGripCloseStick.setup();
+    rotationServo.setup();
+    lowerArmServo.setup();
+    upperArmServo.setup();
+    gripServo.setup();
 }
 
 auto RobotArm::loop() -> void
 {
-    _xyStick.loop();
-    //gripStick.loop();
+    auto upperArmDelta = SERVO_MOVEMENT_STEP * upperArmGripOpenStick.getYPosition();
+    auto lowerArmDelta = SERVO_MOVEMENT_STEP * lowerArmRotateGripCloseStick.getYPosition();
+    auto rotationDelta = SERVO_MOVEMENT_STEP * lowerArmRotateGripCloseStick.getXPosition();
 
-    // TODO: Improve this.
-    auto xDelta = .1 * _xyStick.getXPosition();
-    _xServo.loop(xDelta);
+    auto gripOpenSwitchState = upperArmGripOpenStick.getSwitch();
+    auto gripCloseSwitchState = lowerArmRotateGripCloseStick.getSwitch();
+    auto gripDelta = SERVO_MOVEMENT_STEP * (static_cast<int8_t>(gripOpenSwitchState) - static_cast<int8_t>(gripCloseSwitchState));
 
-    //yServo.loop(xyStick.getDeltaY());
-    
-    auto gripDelta = .1 * _gripStick.getXPosition();
-    _gripServo.loop(gripDelta);
+    upperArmServo.move(upperArmDelta);
+    lowerArmServo.move(lowerArmDelta);
+    rotationServo.move(rotationDelta);
+    gripServo.move(gripDelta);
 }
